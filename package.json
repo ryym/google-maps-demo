@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack-dev-server",
+    "build": "webpack"
   },
   "keywords": [],
   "author": "",
@@ -20,17 +21,15 @@
     "webpack-dev-server": "^1.14.0"
   },
   "dependencies": {
+    "history": "^1.17.0",
     "react": "^0.14.3",
-    "react-dom": "^0.14.3"
+    "react-dom": "^0.14.3",
+    "react-router": "^1.0.3"
   },
   "babel": {
     "presets": [
       "es2015",
       "react"
     ]
-  },
-  "scripts": {
-    "start": "webpack-dev-server",
-    "build": "webpack"
   }
 }
