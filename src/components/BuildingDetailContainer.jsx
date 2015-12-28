@@ -7,11 +7,6 @@ const buildingInfo = {
   address: '東京都足立区保木間2丁目17-1',
   latitude: 35.792621,
   longitude: 139.806513,
-  neighbors: [
-    [ 35.791976, 139.811780 ],
-    [ 35.797128, 139.806029 ],
-  ],
-  radius: 800
 };
 
 /**
@@ -20,13 +15,62 @@ const buildingInfo = {
  * 渡す。こうする事で、`BuildingDetail`に状態を持たせないようにする。
  */
 export default class BuildingDetailContainer extends React.Component {
+  constructor(...args) {
+    super(...args);
+
+    this.state = {
+      neighbors: undefined, // XXX: Should be '[]'
+      radius: undefined,
+      neighborsDisplayed: false
+    };
+  }
+
   render() {
+    const { neighbors, radius } = this.state;
     return (
       <div>
         <a href="/#/">Home</a>
-        <div>Building of {this.props.params.id}</div>
-        <BuildingDetail {...buildingInfo} />
+        <div>
+          <span>Building of {this.props.params.id}</span>
+          {this.renderButton()}
+        </div>
+        <BuildingDetail {...buildingInfo} neighbors={neighbors} radius={radius} />
       </div>
     )
+  }
+
+  renderButton() {
+    if (this.state.neighborsDisplayed) {
+      return (
+        <button onClick={() => this.hideNeighbors()}>
+          周辺情報を隠す
+        </button>
+      );
+    }
+
+    return (
+      <button onClick={() => this.displayNeighbors()}>
+        周辺の建物を表示する
+      </button>
+    );
+  }
+
+  displayNeighbors() {
+    this.setState({
+      neighbors: [
+        [ 35.791976, 139.811780 ],
+        [ 35.797128, 139.806029 ],
+      ],
+      radius: 800,
+      neighborsDisplayed: true
+    });
+  }
+
+  hideNeighbors() {
+    this.setState({
+      neighbors: undefined,
+      radius: undefined,
+      neighborsDisplayed: false
+    })
   }
 }

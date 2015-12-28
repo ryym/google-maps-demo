@@ -27,6 +27,9 @@ export default class BuildingOnMap extends React.Component {
     if (typeof global.google === 'undefined') {
       throw new Error('Please load Google Maps API script in HTML!');
     }
+    this._map = undefined;
+    this._markers = [];
+    this._circle = undefined;
   }
 
   render() {
@@ -34,6 +37,14 @@ export default class BuildingOnMap extends React.Component {
     return (
       <div id="google-map" style={{ height, width }}>Google map here</div>
     );
+  }
+
+  componentDidUpdate() {
+    if (this.props.neighbors && this.props.radius) {
+      this.displayNeighbors(this._map);
+    } else {
+      this.removeNeighbors();
+    }
   }
 
   componentDidMount() {
@@ -45,6 +56,7 @@ export default class BuildingOnMap extends React.Component {
       center: bldLatlng,
       zoom: initialZoom
     });
+    this._map = map;
 
     new google.maps.Marker({
       map,
@@ -52,30 +64,38 @@ export default class BuildingOnMap extends React.Component {
     });
 
     if (this.props.neighbors && this.props.radius) {
-
-      new google.maps.Circle({
-        map,
-        radius: this.props.radius,
-        center: bldLatlng,
-        fillOpacity: 0.1,
-        fillColor: '#555',
-        strokeWeight: 1,
-        strokeOpacity: 0.5,
-        strokeColor: '#D36015'
-      });
-
-      this.props.neighbors.forEach(coord => {
-        new google.maps.Marker({
-          map,
-          position: new google.maps.LatLng(...coord)
-        });
-      })
+      this.displayNeighbors(map);
     }
   }
 
-  // renderNeighbors(mapneighbors, radius) {
+  displayNeighbors(map) {
+    this._circle = new google.maps.Circle({
+      map,
+      radius: this.props.radius,
+      center: map.getCenter(),
+      fillOpacity: 0.1,
+      fillColor: '#555',
+      strokeWeight: 1,
+      strokeOpacity: 0.5,
+      strokeColor: '#D36015'
+    });
 
-  // }
+    this._markers = this.props.neighbors.map(coord => {
+      return new google.maps.Marker({
+        map,
+        position: new google.maps.LatLng(...coord)
+      });
+    });
+  }
+
+  removeNeighbors() {
+    this._markers.forEach(m => {
+      m.setMap(null);
+    });
+    this._circle.setMap(null);
+    this._markers = [];
+    this._circle = undefined;
+  }
 }
 
 BuildingOnMap.Zoom = {
