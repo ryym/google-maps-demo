@@ -46,6 +46,18 @@ new google.maps.Marker(markerOption);
 * オプション一覧
 * メソッド一覧
 * イベント一覧
+
+## InfoWindowクラス
+
+地図上にポップアップでメッセージを表示するためのクラス。
+
+```javascript
+var infoWindow = new google.maps.InfoWindow(windowOptions);
+```
+
+* オプション一覧
+* メソッド一覧
+* イベント一覧
     
 
 
