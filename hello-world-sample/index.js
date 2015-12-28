@@ -15,3 +15,12 @@ var mapOptions = {
 
 // `$canvas`に地図をレンダリングする。
 var map = new google.maps.Map($canvas, mapOptions);
+
+
+// マーカーオブジェクトを作成する。
+// 引数で`map`を指定すれば、インスタンス生成と同時に
+// マップにマーカーが表示される。
+var marker = new google.maps.Marker({
+  position: latlng
+});
+marker.setMap(map);

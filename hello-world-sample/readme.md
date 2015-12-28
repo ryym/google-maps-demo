@@ -34,3 +34,18 @@ var map = new google.maps.Map(canvasElement, mapOptions);
       console.log('Bounds are changed!');
     })
     ```
+
+## Markerクラス
+
+地図上に設置可能なマーカー(ピン)を表すクラス。
+
+```javascript
+new google.maps.Marker(markerOption);
+```
+
+* オプション一覧
+* メソッド一覧
+* イベント一覧
+    
+
+
