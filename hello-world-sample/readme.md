@@ -58,6 +58,55 @@ var infoWindow = new google.maps.InfoWindow(windowOptions);
 * オプション一覧
 * メソッド一覧
 * イベント一覧
-    
 
+## 図形描画
 
+### Polylineクラス
+
+地図上に線を引くクラス。
+
+```javascript
+var line = new google.maps.Polyline(options);
+```
+
+### Polygonクラス
+
+地図上に多角形を作成するクラス。
+
+```javascript
+var line = new google.maps.Polygon(options);
+```
+
+### Rectangleクラス
+
+地図上に長方形を作成するためのクラス。左下と右上の2点だけ指定すれば良い。
+
+```javascript
+new google.maps.Rectangle(options);
+```
+
+### Circleクラス
+
+地図上に円を描画するためのクラス。中心座標と半径を指定する。
+
+```javascript
+new google.maps.Circle({
+  center: latlng,
+  radius: 500,
+  map: map
+});
+```
+
+### GroundOverlayクラス
+
+地図上に画像を表示させるためのクラス。
+
+```javascript
+var sw = new google.maps.LatLng(35.708194, 139.808565);
+var ne = new google.maps.LatLng(35.712280, 139.813619);
+var latlngBounds = new google.maps.LatLngBounds(sw, ne);
+
+new google.maps.GroundOverlay('./groundoverlay.png', latlngBounds);
+
+map.fitBounds(latlngBounds);
+```
