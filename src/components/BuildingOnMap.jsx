@@ -50,7 +50,32 @@ export default class BuildingOnMap extends React.Component {
       map,
       position: bldLatlng
     });
+
+    if (this.props.neighbors && this.props.radius) {
+
+      new google.maps.Circle({
+        map,
+        radius: this.props.radius,
+        center: bldLatlng,
+        fillOpacity: 0.1,
+        fillColor: '#555',
+        strokeWeight: 1,
+        strokeOpacity: 0.5,
+        strokeColor: '#D36015'
+      });
+
+      this.props.neighbors.forEach(coord => {
+        new google.maps.Marker({
+          map,
+          position: new google.maps.LatLng(...coord)
+        });
+      })
+    }
   }
+
+  // renderNeighbors(mapneighbors, radius) {
+
+  // }
 }
 
 BuildingOnMap.Zoom = {
@@ -75,5 +100,9 @@ BuildingOnMap.propTypes = {
     if (! BuildingOnMap.Zoom.isValid(zoom)) {
       return new Error(`Invalid zoom value: ${zoom}`);
     }
-  }
-}
+  },
+
+  neighbors: P.array,
+
+  radius: P.number
+};
