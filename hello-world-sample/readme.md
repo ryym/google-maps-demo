@@ -110,3 +110,13 @@ new google.maps.GroundOverlay('./groundoverlay.png', latlngBounds);
 
 map.fitBounds(latlngBounds);
 ```
+
+
+## その他
+
+### APIの使用について
+
+Googleの各種APIを使用するためには、まずGoogleアカウントを取得し、[Google Developers Console][google-dev-console]で
+APIを有効化してAPIキーを取得する。そしてAPIを使用する際には常に取得したAPIキーをパラメータとして送信する。
+しかし、このAPIキーは必須ではなく、なくても使用できる。ただしキーを使っておくと、
+それに基づいてリクエスト回数の統計など様々な情報を入手できるようになる。
