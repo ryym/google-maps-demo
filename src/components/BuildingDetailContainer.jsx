@@ -1,13 +1,13 @@
 import React from 'react';
 import BuildingDetail from './BuildingDetail';
+import buildings from '../data/buildings';
+
+import {
+  findNeighborsWithin
+} from '../helper';
 
 // XXX: Hard coding data.
-const buildingInfo = {
-  name: '元渕江公園',
-  address: '東京都足立区保木間2丁目17-1',
-  latitude: 35.792621,
-  longitude: 139.806513,
-};
+const buildingInfo = buildings[0];
 
 /**
  * 建物の詳細情報コンポーネントを管理するコンポーネント
@@ -56,12 +56,11 @@ export default class BuildingDetailContainer extends React.Component {
   }
 
   displayNeighbors() {
+    const radius = 1000;
+    const neighbors = findNeighborsWithin(radius, buildingInfo, buildings);
     this.setState({
-      neighbors: [
-        [ 35.791976, 139.811780 ],
-        [ 35.797128, 139.806029 ],
-      ],
-      radius: 800,
+      neighbors,
+      radius,
       neighborsDisplayed: true
     });
   }

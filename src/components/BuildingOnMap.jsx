@@ -80,10 +80,11 @@ export default class BuildingOnMap extends React.Component {
       strokeColor: '#D36015'
     });
 
-    this._markers = this.props.neighbors.map(coord => {
+    this._markers = this.props.neighbors.map(neighbor => {
+      const { latitude, longitude } = neighbor;
       return new google.maps.Marker({
         map,
-        position: new google.maps.LatLng(...coord)
+        position: new google.maps.LatLng(latitude, longitude)
       });
     });
   }
