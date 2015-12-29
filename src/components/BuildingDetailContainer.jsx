@@ -2,6 +2,10 @@ import React from 'react';
 import BuildingDetail from './BuildingDetail';
 import buildings from '../data/buildings';
 
+import {
+  findNeighborsWithin
+} from '../helper';
+
 // XXX: Hard coding data.
 const buildingInfo = buildings[0];
 
@@ -52,12 +56,11 @@ export default class BuildingDetailContainer extends React.Component {
   }
 
   displayNeighbors() {
+    const radius = 1000;
+    const neighbors = findNeighborsWithin(radius, buildingInfo, buildings);
     this.setState({
-      neighbors: [
-        buildings[1],
-        buildings[2]
-      ],
-      radius: 1000,
+      neighbors,
+      radius,
       neighborsDisplayed: true
     });
   }
