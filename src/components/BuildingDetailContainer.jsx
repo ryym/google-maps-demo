@@ -1,13 +1,7 @@
 import React from 'react';
 import BuildingDetail from './BuildingDetail';
 import buildings from '../data/buildings';
-
-import {
-  findNeighborsWithin
-} from '../helper';
-
-// XXX: Hard coding data.
-const buildingInfo = buildings[0];
+import buildingService from '../buildingService';
 
 /**
  * 建物の詳細情報コンポーネントを管理するコンポーネント
@@ -21,12 +15,14 @@ export default class BuildingDetailContainer extends React.Component {
     this.state = {
       neighbors: undefined, // XXX: Should be '[]'
       radius: undefined,
-      neighborsDisplayed: false
+      neighborsDisplayed: false,
+      building: undefined
     };
+    this.fetchBuilding(this.props.params.id);
   }
 
   render() {
-    const { neighbors, radius } = this.state;
+    const { building, neighbors, radius } = this.state;
     return (
       <div>
         <a href="/#/">Home</a>
@@ -34,9 +30,20 @@ export default class BuildingDetailContainer extends React.Component {
           <span>Building of {this.props.params.id}</span>
           {this.renderButton()}
         </div>
-        <BuildingDetail {...buildingInfo} neighbors={neighbors} radius={radius} />
+        <BuildingDetail
+          building={building}
+          neighbors={neighbors}
+          radius={radius}
+        />
       </div>
     )
+  }
+
+  fetchBuilding(id) {
+    buildingService.findById(id)
+      .then(building => {
+        this.setState({ building });
+      });
   }
 
   renderButton() {
@@ -56,13 +63,17 @@ export default class BuildingDetailContainer extends React.Component {
   }
 
   displayNeighbors() {
+    const id = this.props.params.id;
     const radius = 1000;
-    const neighbors = findNeighborsWithin(radius, buildingInfo, buildings);
-    this.setState({
-      neighbors,
-      radius,
-      neighborsDisplayed: true
-    });
+
+    buildingService.listNeighborsOf(id, radius)
+      .then(neighbors => {
+        this.setState({
+          neighbors,
+          radius,
+          neighborsDisplayed: true
+        });
+      });
   }
 
   hideNeighbors() {

@@ -13,24 +13,25 @@ function neighbor(latitude, longitude) {
  */
 export default class BuildingDetail extends React.Component {
   render() {
-    const {
-      latitude, longitude,
-      neighbors, radius
-    } = this.props;
+    if (! this.props.building) {
+      return <div>Loading...</div>;
+    }
+    const { neighbors, radius } = this.props;
+    const b = this.props.building;
 
     const mapProps = {
       height: 400,
       width: 500,
-      latitude,
-      longitude,
+      latitude: b.latitude,
+      longitude: b.longitude,
       initialZoom: 15
     };
 
     return (
       <div>
         <h1>建物情報</h1>
-        <h2>{this.props.name}</h2>
-        <div>{this.props.address}</div>
+        <h2>{b.name}</h2>
+        <div>{b.address}</div>
         <BuildingOnMap {...mapProps} neighbors={neighbors} radius={radius} />
       </div>
     );
@@ -38,10 +39,7 @@ export default class BuildingDetail extends React.Component {
 }
 
 BuildingDetail.propTypes = {
-  name: P.string.isRequired,
-  address: P.string.isRequired,
-  latitude: P.number.isRequired,
-  longitude: P.number.isRequired,
+  building: P.object,
   neighbors: P.array,
   radius: P.number
 };
