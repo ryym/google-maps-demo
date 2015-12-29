@@ -25,6 +25,19 @@ var marker = new google.maps.Marker({
 });
 marker.setMap(map);
 
+// 経線に沿った移動は、南北方向の移動にそのまま対応する。
+new google.maps.Marker({
+  map: map,
+  position: { lat: latlng.lat(), lng: 139.807513 }
+})
+// 緯線に沿った移動は、必ずしも東西方向の移動に対応するわけではない。
+// とはいえ、せまい地域内での緯度と経度を考えるだけなら、それほど
+// 深く意識する必要はないはず。
+new google.maps.Marker({
+  map: map,
+  position: { lat: 35.791621, lng: latlng.lng() }
+})
+
 // 情報ウィンドウを作成する。
 var infoWindow = new google.maps.InfoWindow({
   content: '竹ノ塚駅はここです！!',
@@ -56,3 +69,52 @@ var polygon = new google.maps.Polygon({
     new google.maps.LatLng(35.791007, 139.792768)
   ]
 })
+
+// 中心から半径1Kmの円を描画する。
+new google.maps.Circle({
+  map: map,
+  center: latlng,
+  radius: 1000
+});
+
+// http://easyramble.com/latitude-and-longitude-per-kilometer.html
+
+// 極半径(m)
+var POLE_RADIUS = 6356752.314;
+// 赤道半径(m)
+var EQUATOR_RADIUS = 6378137;
+
+function calcLat() {
+  var cf = 2 * Math.PI * POLE_RADIUS;
+  var d_lat = 360 * 1000 / cf;
+  return d_lat;
+}
+
+// 指定された緯度の地点における、1kmあたりの経度を返す。
+function calcLng(lat) {
+  var r = EQUATOR_RADIUS * Math.cos(lat * Math.PI / 180.0);
+  var cf = 2 * Math.PI * r;
+  var d_lng = 360 * 1000 / cf;
+  return d_lng;
+}
+
+// 中心から北に1km進んだポイント
+// (つまり上記の円の円周上に位置する点)にマーカーを置く。
+new google.maps.Marker({
+  map: map,
+  position: {
+    lat: latlng.lat() + calcLat(),
+    lng: latlng.lng()
+  }
+});
+
+// 中心から西に1km進んだポイント
+// (つまり上記の円の円周上に位置する点)にマーカーを置く。
+new google.maps.Marker({
+  map: map,
+  position: {
+    lat: latlng.lat(),
+    lng: latlng.lng() - calcLng( latlng.lat() )
+  }
+});
+
