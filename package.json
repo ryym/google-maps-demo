@@ -1,15 +1,14 @@
 {
   "name": "google-maps-demo",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Sample app using Google Maps JavaScript API v3",
+  "private": true,
+  "author": "ryym",
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "webpack"
+    "start": "DEBUG=server node bin/www",
+    "build": "webpack",
+    "watch": "webpack --watch"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.3.26",
     "babel-loader": "^6.2.0",
