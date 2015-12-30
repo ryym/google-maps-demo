@@ -4,6 +4,7 @@ const favicon       = require('serve-favicon');
 const logger        = require('morgan');
 const cookieParser  = require('cookie-parser');
 const bodyParser    = require('body-parser');
+const buildings     = require('./routes/buildings');
 const errorHandlers = require('./routes/errors');
 
 /**
@@ -16,6 +17,9 @@ module.exports = function createApp(PATH) {
   // Set up views.
   app.set('views', PATH.views);
   app.set('view engine', 'jade');
+
+  // Routings.
+  app.use('/buildings', buildings);
 
   useMiddlewares(app)(
     // Log requests.
