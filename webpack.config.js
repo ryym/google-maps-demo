@@ -1,9 +1,15 @@
+const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const PATH = {
+  src: path.join(__dirname, 'src', 'client'),
+  dist: path.join(__dirname, 'public')
+};
+
 module.exports = {
   entry: [
-    './src/index.jsx'
+    path.join(PATH.src, 'index.jsx')
   ],
 
   resolve: {
@@ -14,8 +20,7 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        include: /src/,
-        exclude: /node_modules/,
+        include: PATH.src,
         loaders: [
           'babel'
         ]
@@ -24,18 +29,18 @@ module.exports = {
   },
 
   output: {
-    path: './dist',
+    path: PATH.dist,
     publicPath: '/',
     filename: 'bundle.js'
   },
 
   devServer: {
-    contentBase: './dist',
+    contentBase: PATH.dist,
   },
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.html',
+      template: path.join(PATH.src, 'index.html'),
       inject: 'body'
     })
   ]
