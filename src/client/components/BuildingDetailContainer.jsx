@@ -1,7 +1,6 @@
 import React from 'react';
 import BuildingDetail from './BuildingDetail';
-import buildings from '../data/buildings';
-import buildingService from '../buildingService';
+import buildingService from '../service/buildingService';
 
 /**
  * 建物の詳細情報コンポーネントを管理するコンポーネント
@@ -67,10 +66,10 @@ export default class BuildingDetailContainer extends React.Component {
     const radius = 1000;
 
     buildingService.listNeighborsOf(id, radius)
-      .then(neighbors => {
+      .then(res => {
         this.setState({
-          neighbors,
           radius,
+          neighbors: res.neighbors,
           neighborsDisplayed: true
         });
       });

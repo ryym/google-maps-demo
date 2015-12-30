@@ -1,5 +1,5 @@
 import React from 'react';
-import buildingService from '../buildingService';
+import buildingService from '../service/buildingService';
 
 export default class Home extends React.Component {
   constructor(...args) {
