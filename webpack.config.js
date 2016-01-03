@@ -1,19 +1,25 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const PATH = {
-  src: path.join(__dirname, 'src', 'client'),
-  dist: path.join(__dirname, 'public')
+  src:  path.join(__dirname, 'src', 'client'),
+  dist: path.join(__dirname, 'public'),
+  mdl:  path.join(__dirname, 'node_modules', 'material-design-lite')
 };
 
 module.exports = {
-  entry: [
-    path.join(PATH.src, 'index.jsx')
-  ],
+  entry: {
+    app: PATH.src,
+    mdl: path.join(PATH.mdl, 'material.js')
+  },
 
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx'],
+    alias: {
+      $mdl: 'material-design-lite'
+    }
   },
 
   module: {
@@ -24,6 +30,26 @@ module.exports = {
         loaders: [
           'babel'
         ]
+      },
+
+      {
+        test: /\.scss$/,
+        include: PATH.src,
+        loader: ExtractTextPlugin.extract(
+          'style', [
+            'css',
+            'autoprefixer?browsers=last 2 versions',
+            'sass'
+        ])
+      },
+
+      { /* material-design-lite */
+        test: /\.css$/,
+        include: PATH.mdl,
+        loader: ExtractTextPlugin.extract(
+          'style',
+          'css'
+        )
       }
     ]
   },
@@ -31,7 +57,7 @@ module.exports = {
   output: {
     path: PATH.dist,
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
 
   devServer: {
@@ -42,6 +68,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(PATH.src, 'index.html'),
       inject: 'body'
-    })
+    }),
+
+    new ExtractTextPlugin('styles.css')
   ]
 }
