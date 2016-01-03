@@ -13,9 +13,11 @@ const app = document.createElement('div');
 document.body.appendChild(app);
 
 ReactDOM.render(
-  <Router component={App}>
-    <Route path="/" component={Home} />
-    <Route path="/building/:id" component={BuildingDetailContainer} />
+  <Router>
+    <Route component={App}>
+      <Route path="/" component={Home} />
+      <Route path="/building/:id" component={BuildingDetailContainer} />
+    </Route>
   </Router>,
   app
 );
