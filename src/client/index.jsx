@@ -5,6 +5,10 @@ import App from './components/App';
 import Home from './components/Home';
 import BuildingDetailContainer from './components/BuildingDetailContainer';
 
+// Load stylesheets.
+require('./styles/main.scss');
+require('$mdl/material.css');
+
 const app = document.createElement('div');
 document.body.appendChild(app);
 
