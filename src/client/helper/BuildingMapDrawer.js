@@ -17,27 +17,30 @@ export default class BuildingMapDrawer {
     this._markers = [];
     this._circle = undefined;
 
-    this.addMarkers(center);
+    this.addMarkers([center]);
   }
 
   displayNeighbors(radius, positions) {
-    this.addMarkers(...positions);
+    this.addMarkers(positions, { opacity: 0.6 });
     this.drawCircleAroundMainBuilding({ radius });
   }
 
   removeNeighbors() {
     this.removeMarkers();
     this.removeCircle();
-    this.addMarkers(this._mainLatLng);
+    this.addMarkers([this._mainLatLng]);
   }
 
   /**
-   * @param {...(google.maps.LatLng | Object)} positions
+   * @param {(google.maps.LatLng | Object)[]} positions
    */
-  addMarkers(...positions) {
+  addMarkers(positions, userOpts) {
     const map = this._map;
     const markers = positions.map(position => {
-      return new google.maps.Marker({ map, position });
+      const options = Object.assign(
+        { map, position }, userOpts
+      );
+      return new google.maps.Marker(options);
     });
     this._markers = this._markers.concat(markers);
   }
