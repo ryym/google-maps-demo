@@ -2,6 +2,7 @@
 
 まずは以下の紹介記事をもとに、APIを触ってみる。
 依存関係やサーバー処理はなしで、HTMLを表示するだけで動きを確認できるようにする。
+なお、マップを表示する要素は幅と高さの指定が必須であり、未指定だとマップが表示されないため注意。
 
 [Google Maps JavaScript API v3 の使い方まとめ](https://syncer.jp/google-maps-javascript-api-matome)
 
