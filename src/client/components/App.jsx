@@ -9,13 +9,16 @@ export default class App extends React.Component {
      *
      * see: http://stackoverflow.com/questions/31998227/using-material-design-lite-with-react
      */
+    /**
+     * 更に、'mdl-layout__drawer' などのレイアウト要素は、'mdl-layout'要素の直下にいないと
+     * 正しく動作しない。こうなると、mdl の要素をReactでコンポーネント化する事が
+     * 難しくなる。。(MDL関連クラスをコンポーネントのルートに付けられない以上、別のdivで
+     * ラップして返すしかないが、それらを組み合わせると'mdl-layout'と'mdl-layout__xx'の
+     * 間に余計な div が挟まる事になる)
+     */
     return (
       <div>
-        <div className="
-          gmd-container mdl-layout mdl-js-layout mdl-layout--fiexed-header"
-        >
-          {this.props.children}
-        </div>
+        {this.props.children}
       </div>
     );
   }
@@ -27,6 +30,10 @@ export default class App extends React.Component {
     // 'compoenntHandler.upgradeElement(element);'
 
     // XXX: DRY ..extends? decorator? flux?
+    componentHandler.upgradeAllRegistered();
+  }
+
+  componentDidUpdate() {
     componentHandler.upgradeAllRegistered();
   }
 }

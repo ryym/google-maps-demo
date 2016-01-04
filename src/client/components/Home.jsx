@@ -6,11 +6,16 @@ export default class Home extends React.Component {
   render() {
     return (
       <div>
-        <CommonHeader />
-        <main id="home-container" className="mdl-layout__content">
-          {this.props.children}
-          <CommonFooter />
-        </main>
+        <div className="
+          gmd-container mdl-layout mdl-js-layout
+          mdl-layout--fixed-header"
+        >
+          <CommonHeader />
+          <main id="home-container" className="mdl-layout__content">
+            {this.props.children}
+            <CommonFooter />
+          </main>
+        </div>
       </div>
     );
   }
