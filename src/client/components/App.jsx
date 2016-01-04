@@ -14,50 +14,9 @@ export default class App extends React.Component {
         <div className="
           gmd-container mdl-layout mdl-js-layout mdl-layout--fiexed-header"
         >
-          {this.renderHeader()}
-          <main className="mdl-layout__content">
-            {this.props.children}
-            {this.renderFooter()}
-          </main>
+          {this.props.children}
         </div>
       </div>
-    );
-  }
-
-  renderHeader() {
-    return (
-      <header className="mdl-layout__header">
-        <div className="mdl-layout__header-row">
-          <div className="mdl-layout-title">
-            <a id="header-logo-link" href="/#/">Google Maps API Demo</a>
-          </div>
-          <button
-            id="header-btn"
-            className="mdl-button mdl-js-button mdl-button--icon"
-            >
-            <i className="material-icons">account_circle</i>
-          </button>
-          <ul
-            className="mdl-menu mdl-js-menu mdl-menu--bottom-right"
-            htmlFor="header-btn"
-            >
-            <li className="mdl-menu__item">アカウント情報</li>
-            <li className="mdl-menu__item">ログアウト</li>
-          </ul>
-        </div>
-      </header>
-    );
-  }
-
-  renderFooter() {
-    return (
-      <footer id="gmd-footer" className="mdl-mini-footer">
-        <ul className="mdl-mini-footer__link-list">
-          <li><a href="#">会社概要</a></li>
-          <li><a href="#">サイトマップ</a></li>
-          <li><a href="#">お問い合わせ</a></li>
-        </ul>
-      </footer>
     );
   }
 
