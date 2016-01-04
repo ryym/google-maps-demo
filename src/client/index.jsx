@@ -5,7 +5,7 @@ import App from './components/App';
 import Home from './components/Home';
 import BuildingList from './components/BuildingList';
 import BuildingDetailLayout from './components/buildingDetail/BuildingDetailLayout';
-import BuildingDetailContainer from './components/buildingDetail/BuildingDetailContainer';
+import BuildingDetailBase from './components/buildingDetail/BuildingDetailBase';
 
 // Load stylesheets.
 require('./styles/main.scss');
@@ -21,7 +21,7 @@ ReactDOM.render(
         <IndexRoute component={BuildingList} />
       </Route>
       <Route path="/detail/:id" component={BuildingDetailLayout}>
-        <IndexRoute component={BuildingDetailContainer} />
+        <IndexRoute component={BuildingDetailBase} />
       </Route>
     </Route>
   </Router>,

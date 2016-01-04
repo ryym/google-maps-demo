@@ -3,21 +3,31 @@ import {
   PropTypes as P
 } from 'react';
 import BuildingOnMap from './BuildingOnMap';
-
-function neighbor(latitude, longitude) {
-  return { latitude, longitude };
-}
+import buildingService from '../../service/buildingService';
 
 /**
- * 指定された建物の情報を、地図とともに表示するコンポーネント
+ * 指定されたIDの建物情報を取得し、地図とともに表示するコンポーネント
  */
 export default class BuildingDetailBase extends React.Component {
+  constructor(...args) {
+    super(...args);
+
+    this.state = {
+      neighbors: undefined, // XXX: Should be '[]'
+      radius: undefined,
+      neighborsDisplayed: false,
+      building: undefined
+    };
+    this.fetchBuilding(this.props.params.id);
+  }
+
   render() {
-    if (! this.props.building) {
+    if (! this.state.building) {
       return <div>Loading...</div>;
     }
-    const { neighbors, radius } = this.props;
-    const b = this.props.building;
+
+    const { neighbors, radius } = this.state;
+    const b = this.state.building;
 
     const mapProps = {
       height: '100%',
@@ -61,10 +71,7 @@ export default class BuildingDetailBase extends React.Component {
                 {b.address}
               </div>
               <div className="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--8-col-phone">
-                <button type="button"
-                  className="mdl-button mdl-color--accent mdl-color-text--white">
-                  周辺情報を表示
-                </button>
+                {this.renderButton()}
               </div>
               <div className="mdl-cell mdl-cell--8-col mdl-cell--4-col-tablet mdl-grid mdl-grid--no-spacing">
                 <div className="mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">10 Km</div>
@@ -89,6 +96,57 @@ export default class BuildingDetailBase extends React.Component {
 
       </div>
     );
+  }
+
+  fetchBuilding(id) {
+    buildingService.findById(id)
+      .then(building => {
+        this.setState({ building });
+      });
+  }
+
+  renderButton() {
+    let handleClick, text;
+    if (this.state.neighborsDisplayed) {
+      handleClick = () => this.hideNeighbors();
+      text = '周辺情報を隠す';
+    }
+    else {
+      handleClick = () => this.displayNeighbors();
+      text = '周辺情報を表示';
+    }
+    return (
+      <button
+        className="
+          mdl-button mdl-js-button mdl-js-ripple-effect
+          mdl-color--accent mdl-color-text--white"
+        onClick={handleClick}
+      >
+        {text}
+      </button>
+    );
+  }
+
+  displayNeighbors() {
+    const id = this.props.params.id;
+    const radius = 1000;
+
+    buildingService.listNeighborsOf(id, radius)
+      .then(res => {
+        this.setState({
+          radius,
+          neighbors: res.neighbors,
+          neighborsDisplayed: true
+        });
+      });
+  }
+
+  hideNeighbors() {
+    this.setState({
+      neighbors: undefined,
+      radius: undefined,
+      neighborsDisplayed: false
+    });
   }
 }
 
