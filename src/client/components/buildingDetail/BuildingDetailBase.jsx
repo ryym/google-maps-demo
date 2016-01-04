@@ -11,7 +11,7 @@ function neighbor(latitude, longitude) {
 /**
  * 指定された建物の情報を、地図とともに表示するコンポーネント
  */
-export default class BuildingDetail extends React.Component {
+export default class BuildingDetailBase extends React.Component {
   render() {
     if (! this.props.building) {
       return <div>Loading...</div>;
@@ -38,7 +38,7 @@ export default class BuildingDetail extends React.Component {
   }
 }
 
-BuildingDetail.propTypes = {
+BuildingDetailBase.propTypes = {
   building: P.object,
   neighbors: P.array,
   radius: P.number
