@@ -1,17 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, Router } from 'react-router';
+import { Route, IndexRoute, Router } from 'react-router';
 import App from './components/App';
 import Home from './components/Home';
-import BuildingDetailContainer from './components/BuildingDetailContainer';
+import BuildingList from './components/BuildingList';
+import BuildingDetailLayout from './components/buildingDetail/BuildingDetailLayout';
+import BuildingDetailBase from './components/buildingDetail/BuildingDetailBase';
+
+// Load stylesheets.
+require('./styles/main.scss');
+require('$mdl/material.css');
 
 const app = document.createElement('div');
 document.body.appendChild(app);
 
 ReactDOM.render(
-  <Router component={App}>
-    <Route path="/" component={Home} />
-    <Route path="/building/:id" component={BuildingDetailContainer} />
+  <Router>
+    <Route component={App}>
+      <Route path="/" component={Home}>
+        <IndexRoute component={BuildingList} />
+      </Route>
+      <Route path="/detail/:id" component={BuildingDetailLayout}>
+        <IndexRoute component={BuildingDetailBase} />
+      </Route>
+    </Route>
   </Router>,
   app
 );

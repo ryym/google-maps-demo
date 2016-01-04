@@ -109,8 +109,8 @@ BuildingOnMap.Zoom = {
 
 BuildingOnMap.propTypes = {
   // GoogleMapを表示するためには高さと幅が決まっている必要がある。
-  height: P.number.isRequired,
-  width: P.number.isRequired,
+  height: P.oneOfType([ P.string, P.number ]).isRequired,
+  width: P.oneOfType([ P.string, P.number ]).isRequired,
 
   latitude: P.number.isRequired,
 

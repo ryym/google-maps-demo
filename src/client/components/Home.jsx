@@ -1,40 +1,22 @@
 import React from 'react';
-import buildingService from '../service/buildingService';
+import CommonHeader from './CommonHeader';
+import CommonFooter from './CommonFooter';
 
 export default class Home extends React.Component {
-  constructor(...args) {
-    super(...args);
-
-    this.state = {
-      buildings: []
-    };
-    this.fetchBuildings();
-  }
-
   render() {
-    const { buildings } = this.state;
     return (
       <div>
-        <h1>Sample buildings</h1>
-        <ul className="buildings">
-          { buildings.map(this.renderBuilding) }
-        </ul>
+        <div className="
+          gmd-container mdl-layout mdl-js-layout
+          mdl-layout--fixed-header"
+        >
+          <CommonHeader />
+          <main id="home-container" className="mdl-layout__content">
+            {this.props.children}
+            <CommonFooter />
+          </main>
+        </div>
       </div>
     );
-  }
-
-  renderBuilding({ id, name }) {
-    return (
-      <li key={id}>
-        <a href={`/#/building/${id}`}>{name}</a>
-      </li>
-    )
-  }
-
-  fetchBuildings() {
-    buildingService.listAll()
-      .then(buildings => {
-        this.setState({ buildings });
-      });
   }
 }
