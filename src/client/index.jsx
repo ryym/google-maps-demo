@@ -16,7 +16,7 @@ ReactDOM.render(
   <Router>
     <Route component={App}>
       <Route path="/" component={Home} />
-      <Route path="/building/:id" component={BuildingDetailContainer} />
+      <Route path="/detail/:id" component={BuildingDetailContainer} />
     </Route>
   </Router>,
   app

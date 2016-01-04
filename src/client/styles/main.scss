@@ -18,3 +18,18 @@
   padding-top: 16px;
   padding-bottom: 16px;
 }
+
+
+/** Home **/
+
+.gmd-bld-list {
+  max-width: 980px;
+}
+
+.gmd-bld-list__item {
+  cursor: pointer;
+}
+
+.gmd-bld-thumb {
+  min-height: 200px;
+}
