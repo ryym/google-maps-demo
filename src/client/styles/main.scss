@@ -43,6 +43,7 @@
 
 #detail-container {
   width: 100%;
+  max-width: 1200px;
 }
 
 #gmd-drawer {
@@ -80,3 +81,11 @@
 .gmd-detail__navigation__icon {
   margin-right: 30px;
 }
+
+.gmd-google-map {
+  width: 95%;
+  margin: 0 auto;
+  height: 500px;
+  background-color: #E5E3DF;
+}
+

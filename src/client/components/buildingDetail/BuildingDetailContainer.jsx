@@ -4,8 +4,8 @@ import buildingService from '../../service/buildingService';
 
 /**
  * 建物の詳細情報コンポーネントを管理するコンポーネント
- * 受け取ったIDの建物情報をサーバから取得し、`BuildingDetailBase`にプロパティとして
- * 渡す。こうする事で、`BuildingDetailBase`に状態を持たせないようにする。
+ * 受け取ったIDの建物情報をサーバから取得し、`BuildingDetail`にプロパティとして
+ * 渡す。こうする事で、`BuildingDetail`に状態を持たせないようにする。
  */
 export default class BuildingDetailContainer extends React.Component {
   constructor(...args) {
@@ -24,11 +24,6 @@ export default class BuildingDetailContainer extends React.Component {
     const { building, neighbors, radius } = this.state;
     return (
       <div>
-        <a href="/#/">Home</a>
-        <div>
-          <span>Building of {this.props.params.id}</span>
-          {this.renderButton()}
-        </div>
         <BuildingDetailBase
           building={building}
           neighbors={neighbors}
