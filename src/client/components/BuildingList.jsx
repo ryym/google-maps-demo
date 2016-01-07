@@ -24,10 +24,13 @@ export default class BuildingList extends React.Component {
     return (
       <div
         key={id}
+        id={id}
         className="
           gmd-bld-list__item mdl-cell mdl-cell--12-col
           mdl-grid mdl-color--white mdl-shadow--2dp"
         onClick={() => this.handleBuildingClick(id)}
+        onMouseEnter={() => this.handleMouseEnter(id)}
+        onMouseLeave={() => this.handleMouseLeave(id)}
       >
         <header
           className="mdl-cell mdl-cell--3-col-desktop mdk-cell--3-col-tablet"
@@ -72,6 +75,16 @@ export default class BuildingList extends React.Component {
 
   handleBuildingClick(id) {
     location.assign(`/#/detail/${id}`);
+  }
+
+  handleMouseEnter(id) {
+    const item = document.getElementById(id);
+    item.classList.add('mdl-shadow--4dp');
+  }
+
+  handleMouseLeave(id) {
+    const item = document.getElementById(id);
+    item.classList.remove('mdl-shadow--4dp');
   }
 
   fetchBuildings() {
