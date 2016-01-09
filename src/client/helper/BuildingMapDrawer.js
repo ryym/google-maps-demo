@@ -26,9 +26,11 @@ export default class BuildingMapDrawer {
   }
 
   removeNeighbors() {
-    this.removeMarkers();
-    this.removeCircle();
-    this.addMarkers([this._mainLatLng]);
+    if (1 < this._markers.length) {
+      this.removeMarkers();
+      this.removeCircle();
+      this.addMarkers([this._mainLatLng]);
+    }
   }
 
   /**
