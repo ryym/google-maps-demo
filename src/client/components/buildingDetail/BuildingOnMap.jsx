@@ -26,7 +26,7 @@ export default class BuildingOnMap extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.props.neighbors && this.props.radius) {
+    if (this._shouldDisplayNeighbors()) {
       this.displayNeighbors(this._map);
     } else {
       this.removeNeighbors();
@@ -42,7 +42,7 @@ export default class BuildingOnMap extends React.Component {
       zoom: initialZoom
     });
 
-    if (this.props.neighbors && this.props.radius) {
+    if (this._shouldDisplayNeighbors()) {
       this.displayNeighbors();
     }
   }
@@ -61,6 +61,11 @@ export default class BuildingOnMap extends React.Component {
 
   removeNeighbors() {
     this.mapDrawer.removeNeighbors();
+  }
+
+  _shouldDisplayNeighbors() {
+    const { neighbors, radius } = this.props;
+    return 0 < neighbors.length && radius;
   }
 }
 
@@ -88,7 +93,7 @@ BuildingOnMap.propTypes = {
     }
   },
 
-  neighbors: P.array,
+  neighbors: P.array.isRequired,
 
   radius: P.number
 };

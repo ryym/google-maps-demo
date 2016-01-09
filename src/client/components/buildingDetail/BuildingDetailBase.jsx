@@ -13,8 +13,9 @@ export default class BuildingDetailBase extends React.Component {
     super(...args);
 
     this.state = {
-      neighbors: undefined, // XXX: Should be '[]'
-      radius: undefined,
+      neighbors: [],
+      radius: 1000,
+      finalRadius: 1000,
       neighborsDisplayed: false,
       building: undefined
     };
@@ -26,7 +27,7 @@ export default class BuildingDetailBase extends React.Component {
       return <div>Loading...</div>;
     }
 
-    const { neighbors, radius } = this.state;
+    const { neighbors, radius, finalRadius } = this.state;
     const b = this.state.building;
 
     const mapProps = {
@@ -74,14 +75,18 @@ export default class BuildingDetailBase extends React.Component {
                 {this.renderButton()}
               </div>
               <div className="mdl-cell mdl-cell--8-col mdl-cell--4-col-tablet mdl-grid mdl-grid--no-spacing">
-                <div className="mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">10 Km</div>
+                <div className="mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">{radius} m</div>
                 <div className="mdl-cell mdl-cell--6-col mdl-cell--3-col-phone">
+                  <input type="range" min="0" max="5000" value={radius}
+                    className="mdl-slider mdl-js-slider"
+                    onChange={e => this.handleRadiusChange(e)}
+                  />
                 </div>
               </div>
               <div className="mdl-layout-spacer"></div>
             </div>
             <div className="mdl-cell mdl-cell--12-col gmd-google-map">
-              <BuildingOnMap {...mapProps} neighbors={neighbors} radius={radius} />
+              <BuildingOnMap {...mapProps} neighbors={neighbors} radius={finalRadius} />
             </div>
           </div>
 
@@ -129,12 +134,12 @@ export default class BuildingDetailBase extends React.Component {
 
   displayNeighbors() {
     const id = this.props.params.id;
-    const radius = 1000;
+    const radius = this.state.radius;
 
     buildingService.listNeighborsOf(id, radius)
       .then(res => {
         this.setState({
-          radius,
+          finalRadius: radius,
           neighbors: res.neighbors,
           neighborsDisplayed: true
         });
@@ -143,10 +148,18 @@ export default class BuildingDetailBase extends React.Component {
 
   hideNeighbors() {
     this.setState({
-      neighbors: undefined,
-      radius: undefined,
+      neighbors: [],
       neighborsDisplayed: false
     });
+  }
+
+  handleRadiusChange(e) {
+    const radius = parseInt(e.target.value, 10) || 1000;
+    this.setState({ radius });
+  }
+
+  componentDidUpdate() {
+    componentHandler.upgradeAllRegistered();
   }
 }
 
