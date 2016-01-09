@@ -16,7 +16,7 @@ function listNeighborsOf(id, radius) {
   return toPromise(
     request
       .get(`/buildings/${id}/neighbors`)
-      .send({ radius })
+      .query({ radius })
   );
 }
 
