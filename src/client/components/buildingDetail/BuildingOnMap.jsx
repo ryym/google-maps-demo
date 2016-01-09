@@ -25,6 +25,10 @@ export default class BuildingOnMap extends React.Component {
     );
   }
 
+  shouldComponentUpdate(nextProps) {
+    return nextProps.shouldUpdate;
+  }
+
   componentDidUpdate() {
     if (this._shouldDisplayNeighbors()) {
       this.displayNeighbors(this._map);
@@ -78,6 +82,13 @@ BuildingOnMap.Zoom = {
 };
 
 BuildingOnMap.propTypes = {
+  /**
+   * 無駄に何度もGoogle Maps をレンダリングしてしまわないよう、
+   * このコンポーネントがアップデートされるべきタイミングを
+   * 親コンポーネントが指定できるようにする。
+   */
+  shouldUpdate: P.bool.isRequired,
+
   // GoogleMapを表示するためには高さと幅が決まっている必要がある。
   height: P.oneOfType([ P.string, P.number ]).isRequired,
   width: P.oneOfType([ P.string, P.number ]).isRequired,

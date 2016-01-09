@@ -17,7 +17,8 @@ export default class BuildingDetailBase extends React.Component {
       radius: 1000,
       finalRadius: 1000,
       neighborsDisplayed: false,
-      building: undefined
+      building: undefined,
+      shouldUpdate: false
     };
     this.fetchBuilding(this.props.params.id);
   }
@@ -27,7 +28,7 @@ export default class BuildingDetailBase extends React.Component {
       return <div>Loading...</div>;
     }
 
-    const { neighbors, radius, finalRadius } = this.state;
+    const { radius } = this.state;
     const b = this.state.building;
 
     const mapProps = {
@@ -86,7 +87,10 @@ export default class BuildingDetailBase extends React.Component {
               <div className="mdl-layout-spacer"></div>
             </div>
             <div className="mdl-cell mdl-cell--12-col gmd-google-map">
-              <BuildingOnMap {...mapProps} neighbors={neighbors} radius={finalRadius} />
+              <BuildingOnMap {...mapProps}
+                neighbors={this.state.neighbors}
+                radius={this.state.finalRadius}
+                shouldUpdate={this.state.shouldUpdate} />
             </div>
           </div>
 
@@ -106,7 +110,10 @@ export default class BuildingDetailBase extends React.Component {
   fetchBuilding(id) {
     buildingService.findById(id)
       .then(building => {
-        this.setState({ building });
+        this.setState({
+          building,
+          shouldUpdate: true
+        });
       });
   }
 
@@ -141,7 +148,8 @@ export default class BuildingDetailBase extends React.Component {
         this.setState({
           finalRadius: radius,
           neighbors: res.neighbors,
-          neighborsDisplayed: true
+          neighborsDisplayed: true,
+          shouldUpdate: true
         });
       });
   }
@@ -149,13 +157,17 @@ export default class BuildingDetailBase extends React.Component {
   hideNeighbors() {
     this.setState({
       neighbors: [],
-      neighborsDisplayed: false
+      neighborsDisplayed: false,
+      shouldUpdate: true
     });
   }
 
   handleRadiusChange(e) {
     const radius = parseInt(e.target.value, 10) || 1000;
-    this.setState({ radius });
+    this.setState({
+      radius,
+      shouldUpdate: false
+    });
   }
 
   componentDidUpdate() {
