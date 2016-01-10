@@ -8,8 +8,11 @@ export default class BuildingMapDrawer {
       throw new Error('Please load Google Maps API script in HTML!');
     }
 
-    const { latitude, longitude, zoom } = configs;
-    const center = new google.maps.LatLng(latitude, longitude);
+    const { building, zoom } = configs;
+    const center = new google.maps.LatLng(
+      building.latitude,
+      building.longitude
+    );
     const map = new google.maps.Map(mapElement, { center, zoom });
 
     this._mainLatLng = center;
@@ -20,7 +23,10 @@ export default class BuildingMapDrawer {
     this.addMarkers([center]);
   }
 
-  displayNeighbors(radius, positions) {
+  displayNeighbors(radius, neighbors) {
+    const positions = neighbors.map(n => (
+      { lat: n.latitude, lng: n.longitude }
+    ));
     this.addMarkers(positions, { opacity: 0.6 });
     this.drawCircleAroundMainBuilding({ radius });
   }

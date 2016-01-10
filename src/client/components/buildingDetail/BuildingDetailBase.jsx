@@ -34,8 +34,7 @@ export default class BuildingDetailBase extends React.Component {
     const mapProps = {
       height: '100%',
       width: '100%',
-      latitude: b.latitude,
-      longitude: b.longitude,
+      building: b,
       initialZoom: 15
     };
 

@@ -38,11 +38,11 @@ export default class BuildingOnMap extends React.Component {
   }
 
   componentDidMount() {
-    const { latitude, longitude, initialZoom } = this.props;
+    const { building, initialZoom } = this.props;
     const mapElement = document.getElementById('google-map');
 
     this.mapDrawer = new BuildingMapDrawer(mapElement, {
-      latitude, longitude,
+      building,
       zoom: initialZoom
     });
 
@@ -52,15 +52,8 @@ export default class BuildingOnMap extends React.Component {
   }
 
   displayNeighbors() {
-    const neighborPositions = this.props.neighbors.map(n => {
-      return {
-        lat: n.latitude,
-        lng: n.longitude
-      };
-    });
-    this.mapDrawer.displayNeighbors(
-      this.props.radius, neighborPositions
-    );
+    const { radius, neighbors } = this.props;
+    this.mapDrawer.displayNeighbors(radius, neighbors);
   }
 
   removeNeighbors() {
@@ -93,9 +86,7 @@ BuildingOnMap.propTypes = {
   height: P.oneOfType([ P.string, P.number ]).isRequired,
   width: P.oneOfType([ P.string, P.number ]).isRequired,
 
-  latitude: P.number.isRequired,
-
-  longitude: P.number.isRequired,
+  building: P.object.isRequired,
 
   initialZoom: (props, name) => {
     const zoom = props[name];
