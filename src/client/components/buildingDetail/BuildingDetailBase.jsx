@@ -23,6 +23,14 @@ export default class BuildingDetailBase extends React.Component {
     this.fetchBuilding(this.props.params.id);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.state.shouldUpdate = false;
+    const nextId = parseInt(nextProps.params.id, 10);
+    if (this.state.building.id !== nextId) {
+      this.fetchBuilding(nextId);
+    }
+  }
+
   render() {
     if (! this.state.building) {
       return <div>Loading...</div>;
@@ -111,6 +119,10 @@ export default class BuildingDetailBase extends React.Component {
       .then(building => {
         this.setState({
           building,
+          neighbors: [],
+          neighborsDisplayed: false,
+          radius: 1000,
+          finalRadius: 1000,
           shouldUpdate: true
         });
       });

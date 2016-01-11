@@ -29,26 +29,33 @@ export default class BuildingOnMap extends React.Component {
     return nextProps.shouldUpdate;
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.building.id !== nextProps.building.id) {
+      this.initializeMap(nextProps);
+    }
+  }
+
   componentDidUpdate() {
     if (this._shouldDisplayNeighbors()) {
-      this.displayNeighbors(this._map);
+      this.displayNeighbors();
     } else {
       this.removeNeighbors();
     }
   }
 
   componentDidMount() {
-    const { building, initialZoom } = this.props;
-    const mapElement = document.getElementById('google-map');
+    this.initializeMap(this.props);
+    if (this._shouldDisplayNeighbors()) {
+      this.displayNeighbors();
+    }
+  }
 
+  initializeMap({ building, initialZoom }) {
+    const mapElement = document.getElementById('google-map');
     this.mapDrawer = new BuildingMapDrawer(mapElement, {
       building,
       zoom: initialZoom
     });
-
-    if (this._shouldDisplayNeighbors()) {
-      this.displayNeighbors();
-    }
   }
 
   displayNeighbors() {
