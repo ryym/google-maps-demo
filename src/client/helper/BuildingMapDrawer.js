@@ -15,19 +15,16 @@ export default class BuildingMapDrawer {
     );
     const map = new google.maps.Map(mapElement, { center, zoom });
 
-    this._mainLatLng = center;
+    this._centerBld = building;
     this._map = map;
     this._markers = [];
     this._circle = undefined;
 
-    this.addMarkers([center]);
+    this.markBuildings([building]);
   }
 
   displayNeighbors(radius, neighbors) {
-    const positions = neighbors.map(n => (
-      { lat: n.latitude, lng: n.longitude }
-    ));
-    this.addMarkers(positions, { opacity: 0.6 });
+    this.markBuildings(neighbors, { opacity: 0.6 });
     this.drawCircleAroundMainBuilding({ radius });
   }
 
@@ -35,22 +32,51 @@ export default class BuildingMapDrawer {
     if (1 < this._markers.length) {
       this.removeMarkers();
       this.removeCircle();
-      this.addMarkers([this._mainLatLng]);
+      this.markBuildings([this._centerBld]);
     }
   }
 
   /**
-   * @param {(google.maps.LatLng | Object)[]} positions
+   * @param {Object[]} buildings
    */
-  addMarkers(positions, userOpts) {
+  markBuildings(buildings, userOpts) {
     const map = this._map;
-    const markers = positions.map(position => {
+    const markers = buildings.map(b => {
       const options = Object.assign(
-        { map, position }, userOpts
+        {
+          map,
+          position: { lat: b.latitude, lng: b.longitude }
+        }, userOpts
       );
-      return new google.maps.Marker(options);
+      return this.addBuildingMarker(b, options);
     });
     this._markers = this._markers.concat(markers);
+  }
+
+  addBuildingMarker(building, options) {
+    const marker  = new google.maps.Marker(options);
+    const infoWin = new google.maps.InfoWindow({
+      content: this._makeInfoWindowContent(building),
+      position: options.position,
+      pixelOffset: new google.maps.Size(0, -40)
+    });
+
+    google.maps.event.addListener(marker, 'click', e => {
+      infoWin.open(this._map);
+    });
+
+    return marker;
+  }
+
+  _makeInfoWindowContent(building) {
+    if (building.id === this._centerBld.id) {
+      return building.name;
+    }
+    return `
+      <a href="/#/detail/${building.id}" class="gmd-bld-link">
+        ${building.name}
+      </a>
+    `;
   }
 
   /**
@@ -86,7 +112,10 @@ export default class BuildingMapDrawer {
     return {
       map: this._map,
       radius: 1000,
-      center: this._mainLatLng,
+      center: {
+        lat: this._centerBld.latitude,
+        lng: this._centerBld.longitude
+      },
       fillOpacity: 0.1,
       fillColor: '#555',
       strokeWeight: 1,
