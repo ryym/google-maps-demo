@@ -5,6 +5,7 @@
   "private": true,
   "author": "ryym",
   "scripts": {
+    "prestart": "webpack",
     "start": "DEBUG=server node bin/www",
     "build": "webpack",
     "watch": "webpack --watch"
